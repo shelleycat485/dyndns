@@ -148,7 +148,11 @@ options:
   -i, --ignore-cache    ignore cache for startup
   -c CONF, --conf CONF  configuration file, default =
                         ~/.config/dyndns.toml
+  -u, --unmask          unmask the username:password in the logs
 ```
+## Fork shelleycat485
+
+- Added masking username:password of https requests in logs
 
 ## Summary of Version 2 Changes
 

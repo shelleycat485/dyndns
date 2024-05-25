@@ -40,6 +40,8 @@ opt.add_argument('-i', '--ignore-cache', action='store_true',
         help='ignore cache for startup')
 opt.add_argument('-c', '--conf', default=str(CONFFILE),
         help=f'configuration file, default = {CONFFILE}')
+opt.add_argument('-u', '--unmask', action='store_false',
+        help='unmask http: username:password in logs, default masked')
 args = opt.parse_args()
 
 conffile = Path(args.conf)
@@ -55,12 +57,25 @@ poll_period = int(convtime.tosec(tconf.get('poll_period', '10m')))
 force_period = int(convtime.tosec(tconf.get('force_period', '24h'))) \
         * 1000_000_000
 
+def strip_password_from_http(request):
+    'Strip out real username:password from http request'
+    s = request
+    if args.unmask:
+        regex = re.compile(r"(.*[http|https]\://).+@(.*)" )
+        m = regex.match(request)
+        if m:
+            s = str(m.group(1))+"username:password@"+str(m.group(2)) 
+
+    return s
+
 def log(msg):
     'Log message to stdout'
+    msg = strip_password_from_http(msg)
     print(msg, flush=True)
 
 def logerr(msg):
     'Log message to stderr'
+    msg = strip_password_from_http(msg)
     print(msg, file=sys.stderr, flush=True)
 
 async def urlget(session, url):

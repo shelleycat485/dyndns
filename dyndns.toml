@@ -31,6 +31,11 @@
 #
 # Some example [[urls]] entries follow:
 
+#noip
+#  [[urls]]
+#  url = 'https://username:password@dynupdate.no-ip.com/nic/update?hostname=m2attables.ddns.net&myip=<ipv4>'
+#  response = ['^good', '^nochg']
+
 # duckdns.org: See https://www.duckdns.org/spec.jsp.
 # [[urls]]
 # url = 'https://www.duckdns.org/update?domains=HOSTNAME&token=TOKEN&ip=<ipv4>&ipv6=<ipv6>'
